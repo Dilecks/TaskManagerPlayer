@@ -121,45 +121,7 @@ HWND GetTSMHwnd() {
 	
 	return(hwndFound);
 }
-//void DisplayImage(HWND hwnd, LPCTSTR szImagePath)
-//{
-//	HDC hDC = GetDC(hwnd);
-//	RECT rect;
-//	GetWindowRect(hwnd, &rect);
-//	HANDLE hFile = CreateFile(szImagePath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL); //从指定的路径szImagePath中读取文件句柄
-//	if ((int)hFile == -1)
-//	{
-//		printf("File load error!\n");
-//		exit(-1);
-//	}
-//	DWORD dwFileSize = GetFileSize(hFile, NULL); //获得图片文件的大小，用来分配全局内存
-//	HGLOBAL hImageMemory = GlobalAlloc(GMEM_MOVEABLE, dwFileSize); //给图片分配全局内存
-//	void *pImageMemory = GlobalLock(hImageMemory); //锁定内存
-//	DWORD dwReadedSize; //保存实际读取的文件大小
-//	ReadFile(hFile, pImageMemory, dwFileSize, &dwReadedSize, NULL); //读取图片到全局内存当中
-//	GlobalUnlock(hImageMemory); //解锁内存
-//	CloseHandle(hFile); //关闭文件句柄
-//	IStream *pIStream;//创建一个IStream接口指针，用来保存图片流
-//	IPicture *pIPicture;//创建一个IPicture接口指针，表示图片对象
-//	CreateStreamOnHGlobal(hImageMemory, false, &pIStream); //用全局内存初使化IStream接口指针
-//	HRESULT ea=OleLoadPicture(pIStream, 0, false, IID_IPicture, (LPVOID*)&(pIPicture));//用OleLoadPicture获得IPicture接口指针
-//																			//得到IPicture COM接口对象后，你就可以进行获得图片信息、显示图片等操作
-//	OLE_XSIZE_HIMETRIC hmWidth;
-//	OLE_YSIZE_HIMETRIC hmHeight;
-//
-//	pIPicture->get_Width(&hmWidth); //用接口方法获得图片的宽和高
-//	pIPicture->get_Height(&hmHeight);
-//	//hmHeight = rect.bottom - rect.top;
-//	//hmWidth = rect.right - rect.left;
-//	double resize = 1.25;
-//	pIPicture->Render(hDC, 0, 0, (rect.right - rect.left)*resize , (rect.bottom - rect.top)*resize, 0, hmHeight, hmWidth, -hmHeight, NULL); //在指定的DC上绘出图片
-//	//pIPicture->Render(hDC, 0, 0, hmWidth / 25, hmHeight / 25, 0, hmHeight, hmWidth, -hmHeight, NULL); //在指定的DC上绘出图片
-//	pIPicture->PictureChanged();
-//	GlobalFree(hImageMemory); //释放全局内存
-//	pIStream->Release(); //释放pIStream
-//	pIPicture->Release(); //释放pIPicture
-//
-//}
+
 wchar_t* c2w(const char *str)
 {
 	int length = strlen(str) + 1;
@@ -342,60 +304,3 @@ int main()
 	}
 
 }
-
-
-//int main(void)
-//{
-//	float center1X = 200;
-//	float center1Y = 100;
-//	float center2X = 350;
-//	float center2Y = 250;
-//	float center0X = (center1X + center2X) / 2;
-//	float center0Y = (center1Y + center2Y) / 2;
-//	float centerRradius = (center2X - center1X) / 2;
-//
-//	float around1X = 0;
-//	float around1Y = 0;
-//	float around2X = 0;
-//	float around2Y = 0;
-//	float around0X = 0;
-//	float around0Y = 0;
-//	float aroundRradius = 20;
-//	int angle = 0;
-//	//HWND hConsole = GetConsoleHwnd();    // 获得控制台窗口句柄
-//	HDC hDC = GetDC((HWND)0x000107C2);    // 获得控制台窗口绘图DC
-//
-//	HPEN hPen = CreatePen(0, 5, RGB(255, 255, 255));
-//	HBRUSH hBrush1 = CreateSolidBrush(RGB(81, 24, 214));
-//	HBRUSH hBrush2 = CreateSolidBrush(RGB(169, 138, 0));
-//	HBRUSH hBrush3 = CreateSolidBrush(RGB(0, 0, 0));
-//
-//	HPEN hOldPen = (HPEN)SelectObject(hDC, hPen);    // 让DC选择此画笔
-//	HDC pdc = GetDC((HWND)0x000107C2);
-//
-//	hOldPen = (HPEN)SelectObject(pdc, hBrush1);
-//	Ellipse(pdc, center1X, center1Y, center2X, center2Y);//用笔刷画实心圆 ;
-//	while (1)
-//	{
-//		hOldPen = (HPEN)SelectObject(pdc, hBrush2);
-//		around0X = center0X - (centerRradius + 40)*sin((angle % 360) / 180.0 * 3.14159265358979);
-//		around0Y = center0Y + (centerRradius + 40)*cos((angle % 360) / 180.0 * 3.14159265358979);
-//		Ellipse(pdc, around0X - aroundRradius, around0Y + aroundRradius, around0X + aroundRradius, around0Y - aroundRradius);
-//		Sleep(10);
-//		hOldPen = (HPEN)SelectObject(pdc, hBrush3);
-//		Ellipse(pdc, around0X - aroundRradius, around0Y + aroundRradius, around0X + aroundRradius, around0Y - aroundRradius);
-//		angle++;
-//	}
-//
-//
-//	//Ellipse(pdc,5,5,45,45);//用笔刷画实心圆 ;
-//	//MoveToEx(hDC,0, 250, NULL);
-//	//Arc(hDC,100,100,300,300,350,500,350,500);//用画笔画空心圆 ; 
-//	//for(int i=0;i<500;i++)
-//	//   LineTo(hDC,10*i,150+100*sin(i*6));
-//	//InvalidateRect(hConsole, NULL, TRUE); // 刷新窗口
-//
-//	ReleaseDC((HWND)0x000107C2, hDC);// 释放DC
-//	while (1);
-//	return 0;
-//}
